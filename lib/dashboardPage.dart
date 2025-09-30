@@ -20,15 +20,13 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+        // centerTitle: true,
         title: Text(
-          textAlign: TextAlign.center,
+          //textAlign: TextAlign.center,
           'Dashboard',
           style: TextStyle(
             fontSize: 18,
@@ -58,7 +56,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
                   Text(
                     'Total de Notas \n validas:0 ',
-                     //< aqui devo colocar a quantidade de notas cadastradas
+                    //< aqui devo colocar a quantidade de notas cadastradas
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -86,7 +84,12 @@ class _DashboardPageState extends State<DashboardPage> {
                 // ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SendNotas(db: widget.db)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SendNotas(db: widget.db),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

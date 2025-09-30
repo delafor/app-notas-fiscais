@@ -50,7 +50,7 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final List<Widget Function()> screens = [
       () => DashboardPage(db: widget.db),
-      () => GuaranteesPage(db: widget.db), 
+      () => GuaranteesPage(db: widget.db),
       () => NotasPage(db: widget.db), // Profile
       // () => GuaranteesPage(db: widget.db), // Settings
     ];
@@ -58,19 +58,18 @@ class HomeState extends State<Home> {
     return Scaffold(
       //backgroundColor: const Color.fromRGBO(218, 241, 222, 1),
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          textAlign: TextAlign.center,
-          'N',
-          style: TextStyle(
-            fontSize: 18,
-            letterSpacing: 1,
+        // centerTitle: true,
+        // title: Text(
+        //   textAlign: TextAlign.center,
+        //   'N',
+        //   style: TextStyle(
+        //     fontSize: 18,
+        //     letterSpacing: 1,
 
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black,
+        //   ),
+        // ),
         actions: [
           PopupMenuButton<String>(
             icon: Icon(Icons.menu), // ícone do botão
