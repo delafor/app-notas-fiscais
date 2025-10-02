@@ -61,13 +61,16 @@ class BotoesCustomizados extends StatelessWidget {
                 icon!,
                 SizedBox(width: 10),
                 Flexible(
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: fontSize ?? 20,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: fontSize ?? 20,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
+                      ),
                     ),
                   ),
                 ),
@@ -78,14 +81,14 @@ class BotoesCustomizados extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: fontSize ?? 20,
+                fontSize: fontSize ?? 18,
                 fontWeight: FontWeight.bold,
                 color: textColor,
               ),
             ),
           if (imagePath != null && imagePath!.isNotEmpty) ...[
             const SizedBox(height: 10),
-            Image.asset(imagePath!, width: 110, height: 110),
+            Image.asset(imagePath!, width: 100, height: 100),
           ],
         ],
       ),
@@ -119,6 +122,7 @@ class _SendNotasState extends State<SendNotas> {
             Padding(
               padding: const EdgeInsets.only(top: 65),
               child: Row(
+                
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Botão de info
@@ -139,10 +143,10 @@ class _SendNotasState extends State<SendNotas> {
                       backgroundColor: Colors.orange,
                       shadowColor: Colors.black,
                     ),
-                    fontSize: 12,
+                    fontSize: 10,
                     textColor: Colors.white,
-                    minWidth: 400,
-                    minHeight: 30,
+                    minWidth: 500,
+                    minHeight: 15,
                   ),
 
                   // TextButton(
@@ -190,33 +194,41 @@ class _SendNotasState extends State<SendNotas> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Botão 1
-                BotoesCustomizados(
-                  text: 'Enviar Nota/Cupom Fiscal',
-                  imagePath: 'assets/CupomFiscal.png',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NotasPage(db: widget.db),
-                      ),
-                    );
-                  },
-                  fontSize: 27,
+                SizedBox(
+                  width: 460,
+                  height: 200,
+                  child: BotoesCustomizados(
+                    text: 'Enviar Nota/Cupom Fiscal',
+                    imagePath: 'assets/CupomFiscal.png',
+
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NotasPage(db: widget.db),
+                        ),
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 20),
                 // Botão 2
-                BotoesCustomizados(
-                  text:
-                      'Enviar Nota Fiscal Eletrônica\n(NF-e, DANFE, DANFE Simplificada)',
-                  imagePath: 'assets/NotaEletronica.png',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NotasPage(db: widget.db),
-                      ),
-                    );
-                  },
+                SizedBox(
+                  width: 460,
+                  height: 210,
+                  child: BotoesCustomizados(
+                    text:
+                        'Enviar Nota Fiscal Eletrônica\n(NF-e, DANFE, DANFE Simplificada)',
+                    imagePath: 'assets/NotaEletronica02.png',
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NotasPage(db: widget.db),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

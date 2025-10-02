@@ -1,9 +1,10 @@
 // pages/invoices_page.dart
 import 'dart:io';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class NotasPage extends StatefulWidget {
@@ -14,38 +15,131 @@ class NotasPage extends StatefulWidget {
   State<NotasPage> createState() => _NotasPageState();
 }
 
+class BotoesCustomizados extends StatelessWidget {
+  final Widget? icon;
+  final String text;
+
+  final VoidCallback onTap;
+  final ButtonStyle? style;
+  final double? fontSize;
+  final Color? textColor;
+
+  const BotoesCustomizados({
+    Key? key,
+    //required this.icon,
+    required this.text,
+    required this.onTap,
+    this.style,
+    this.icon,
+    this.fontSize,
+    this.textColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final defaultStyle = ElevatedButton.styleFrom(
+      //minimumSize: Size(minWidth ?? 100, minHeight ?? 100),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17)),
+    );
+    return ElevatedButton(
+      style: defaultStyle.merge(style),
+      onPressed: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) icon!,
+
+          SizedBox(height: 5),
+          Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: fontSize ?? 12,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _NotasPageState extends State<NotasPage> {
   XFile? nota;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //style: defaultStyle.merge(style),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: selecionarNota,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: BotoesCustomizados(
+                    icon: nota != null
+                        ? Image.file(
+                            File(nota!.path),
+                            width: 45,
+                            height: 45,
+                            fit: BoxFit.cover,
+                          )
+                        : Icon(Icons.telegram, size: 25),
+                    text: 'Enviar Nota',
+
+                    onTap: selecionarNota,
+                  ),
                 ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  nota != null
-                      ? Image.file(
-                          File(nota!.path),
-                          width: 45,
-                          height: 45,
-                          fit: BoxFit.cover,
-                        )
-                      : Icon(Icons.telegram, size: 25),
-                  Text('Enviar Nota'),
-                ],
-              ),
+                SizedBox(width: 50),
+                SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: BotoesCustomizados(
+                    icon: Icon(Icons.key, size: 25),
+                    text: 'Digitar\nChave de Acesso',
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                    ),
+                    onTap: selecionarNota,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 50),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: BotoesCustomizados(
+                    icon: FaIcon(FontAwesomeIcons.barcode, size: 25),
+                    text: 'Ler\nCódigo de barra',
+                    onTap: selecionarNota,
+                  ),
+                ),
+                SizedBox(width: 50),
+                SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: BotoesCustomizados(
+                    icon: FaIcon(FontAwesomeIcons.qrcode, size: 25),
+                    text: 'Ler\nCódigo de barra',
+                    onTap: selecionarNota,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

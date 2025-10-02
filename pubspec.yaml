@@ -50,6 +50,7 @@ dependencies:
   image_picker: ^1.2.0
   flutter_localizations:
     sdk: flutter
+  font_awesome_flutter: ^10.9.1
 
 
 
@@ -106,7 +107,8 @@ flutter:
     - assets/NotaEscudo.png
     - assets/CupomFiscal.png
     - assets/NotaEletronica.png
-    
+    - assets/NotaEletronica02.png
+    - assets/NotaEletronica02(2).png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
