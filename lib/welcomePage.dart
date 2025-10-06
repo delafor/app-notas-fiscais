@@ -20,97 +20,6 @@ class Welcome extends StatefulWidget {
 }
 
 class WelcomepageState extends State<Welcome> {
-  // Future<UserCredential?> _signInWithTwitter() async {
-  //   try {
-  //     if (kIsWeb) {
-  //       TwitterAuthProvider twitterProvider = TwitterAuthProvider();
-
-  //       try {
-  //         // Primeiro tenta o popup
-  //         final userCredential = await FirebaseAuth.instance.signInWithPopup(
-  //           twitterProvider,
-  //         );
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text(
-  //               'Logado como: ${userCredential.user?.email ?? 'sem email'}',
-  //             ),
-  //           ),
-  //         );
-  //         return userCredential;
-  //       } on FirebaseAuthException catch (e) {
-  //         // Se der erro de estado ou popup, tenta com redirect
-  //         if (e.code == 'popup-blocked' ||
-  //             e.code == 'popup-closed-by-user' ||
-  //             e.code.contains('state')) {
-  //           await FirebaseAuth.instance.signInWithRedirect(twitterProvider);
-  //           // O resultado será tratado depois com getRedirectResult()
-  //         } else {
-  //           rethrow;
-  //         }
-  //       }
-  //     } else {
-  //       // Mobile login usando twitter_login
-  //       final twitterLogin = TwitterLogin(
-  //         apiKey:
-  //             '6Yw2yIRoOjGKJ2SxVMbmfoXSg', // Coloque exatamente como no Twitter Developer
-  //         apiSecretKey:
-  //             '7gRLLV70WdWEOnnOBhIiRQ2UABGPQbh2GYf4TkPwlx7je2oZOp', // Idem
-  //         redirectURI:
-  //             'https://formulario-d5aa9.firebaseapp.com/__/auth/handler',
-  //       );
-
-  //       final authResult = await twitterLogin.login();
-
-  //       if (authResult.status == TwitterLoginStatus.loggedIn) {
-  //         final twitterAuthCredential = TwitterAuthProvider.credential(
-  //           accessToken: authResult.authToken!,
-  //           secret: authResult.authTokenSecret!,
-  //         );
-
-  //         final userCredential = await FirebaseAuth.instance
-  //             .signInWithCredential(twitterAuthCredential);
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text(
-  //               'Logado como: ${userCredential.user?.email ?? 'sem email'}',
-  //             ),
-  //           ),
-  //         );
-  //         return userCredential;
-  //       } else if (authResult.status == TwitterLoginStatus.cancelledByUser) {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           const SnackBar(content: Text('Login cancelado pelo usuário')),
-  //         );
-  //         return null;
-  //       } else {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(
-  //             content: Text(
-  //               'Erro no login Twitter: ${authResult.errorMessage}',
-  //             ),
-  //           ),
-  //         );
-  //         return null;
-  //       }
-  //     }
-  //   } on FirebaseAuthException catch (authError) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('FirebaseAuth error: ${authError.code}')),
-  //     );
-  //     debugPrint(
-  //       'FirebaseAuthException: ${authError.code} - ${authError.message}',
-  //     );
-  //     return null;
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(
-  //       context,
-  //     ).showSnackBar(SnackBar(content: Text('Erro no login: $e')));
-  //     debugPrint('Erro no _signInWithTwitter: $e');
-  //     return null;
-  //   }
-  // }
-
   final formkey = GlobalKey<FormState>();
 
   // instância do GoogleSignIn (sem construtor "anônimo")
@@ -195,7 +104,7 @@ class WelcomepageState extends State<Welcome> {
                       height: 200,
                     ),
                     Text(
-                      "GGestor de Garantias\n    e Notas Fiscais",
+                      "Gestor de Garantias\n    e Notas Fiscais",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,

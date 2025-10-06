@@ -8,7 +8,7 @@ class InfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Regras da Nota Fiscal')),
+      appBar: AppBar(title: const Text('Enviar Notas')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

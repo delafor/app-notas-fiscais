@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:formulario/InvoicesPage.dart';
 import 'package:formulario/dashboardPage.dart';
 import 'package:formulario/guaranteesPage.dart';
 import 'package:formulario/notasPage.dart';
@@ -50,8 +51,8 @@ class HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final List<Widget Function()> screens = [
       () => DashboardPage(db: widget.db),
-      () => GuaranteesPage(db: widget.db),
-      () => NotasPage(db: widget.db), // Profile
+      () => InvoicesPage(db: widget.db),
+      () => GuaranteesPage(db: widget.db), // Profile
       // () => GuaranteesPage(db: widget.db), // Settings
     ];
 
@@ -90,58 +91,43 @@ class HomeState extends State<Home> {
       body: SafeArea(
         bottom: false,
         top: false,
-        child: Row(
-          children: [
-            NavigationRail(
-              //backgroundColor: const Color.fromARGB(255, 214, 213, 213),
-              minWidth: 100,
+        child: screenIndex < screens.length
+            ? screens[screenIndex]()
+            : const Center(child: Text('Index out of range')),
+      ),
 
-              extended:
-                  false, //faz a label aparecer do lado do texto,n é necessario,so se eu quiser q apareça ai eu deixo true
-              selectedIndex: screenIndex,
-              onDestinationSelected: (index) {
-                setState(() {
-                  screenIndex = index;
-                });
-              },
+      // 👇 Barra inferior substituindo o NavigationRail
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: screenIndex,
+        onDestinationSelected: (index) {
+          setState(() {
+            screenIndex = index;
+          });
+        },
+        destinations: const [
+          // NavigationRailDestination(
+          //   icon: Icon(Icons.add_outlined, size: 45),
+          //   selectedIcon: Icon(Icons.add),
+          //   label: Text('Adicionar'),
+          // ),
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined, size: 45),
+            selectedIcon: Icon(Icons.home),
+            label: 'Dashboard',
+          ),
 
-              destinations: const [
-                // NavigationRailDestination(
-                //   icon: Icon(Icons.add_outlined, size: 45),
-                //   selectedIcon: Icon(Icons.add),
-                //   label: Text('Adicionar'),
-                // ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.home_outlined, size: 45),
-                  selectedIcon: Icon(Icons.home),
-                  label: Text('Dashboard'),
-                ),
+          NavigationDestination(
+            icon: Icon(Icons.description_outlined, size: 45),
+            selectedIcon: Icon(Icons.description),
+            label: 'Notas Fiscais',
+          ),
 
-                NavigationRailDestination(
-                  icon: Icon(Icons.description_outlined, size: 45),
-                  selectedIcon: Icon(Icons.description),
-                  label: Text('Notas Fiscais'),
-                ),
-
-                NavigationRailDestination(
-                  icon: Icon(Icons.shield_outlined, size: 45),
-                  selectedIcon: Icon(Icons.shield),
-                  label: Text('Garantias'),
-                ),
-              ],
-            ),
-            const VerticalDivider(
-              thickness: 1,
-              width: 1,
-            ), //linha onde cria uma sombra entre a pagina e a coluna de icons
-            // This is the main content.
-            Expanded(
-              child: screenIndex < screens.length
-                  ? screens[screenIndex]()
-                  : const Center(child: Text('Index out of range')),
-            ),
-          ],
-        ),
+          NavigationDestination(
+            icon: Icon(Icons.shield_outlined, size: 45),
+            selectedIcon: Icon(Icons.shield),
+            label: 'Garantias',
+          ),
+        ],
       ),
     );
   }

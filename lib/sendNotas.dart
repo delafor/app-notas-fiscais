@@ -114,7 +114,7 @@ class _SendNotasState extends State<SendNotas> {
           },
         ),
 
-        title: Text('Enviar Notas'),
+        title: Text('Dashboard'),
       ),
       body: Center(
         child: Column(
@@ -122,7 +122,6 @@ class _SendNotasState extends State<SendNotas> {
             Padding(
               padding: const EdgeInsets.only(top: 65),
               child: Row(
-                
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Botão de info

@@ -24,7 +24,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
+        centerTitle: true,
         title: Text(
           //textAlign: TextAlign.center,
           'Dashboard',
@@ -41,35 +41,32 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 25, left: 25),
-              child: Row(
+              padding: const EdgeInsets.only(top: 25, right: 90),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Notas enviadas em \n ${nomeDoMes}/${anoAtual}',
+                    'Olá',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 35,
                       color: Colors.black,
                     ),
                   ),
                   SizedBox(width: 50),
 
                   Text(
-                    'Total de Notas \n validas:0 ',
+                    'Gerencie suas notas fiscais de forma\nsimples e segura.',
                     //< aqui devo colocar a quantidade de notas cadastradas
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 ],
               ),
             ),
 
-            SizedBox(height: 200),
+            SizedBox(height: 50),
 
-            Row(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -82,45 +79,117 @@ class _DashboardPageState extends State<DashboardPage> {
                 //     trailing: nota != null ? Image.file(File(nota!.path)) : null,
                 //   ),
                 // ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SendNotas(db: widget.db),
+                SizedBox(
+                  width: 460,
+                  height: 210,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SendNotas(db: widget.db),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
                       ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.telegram, size: 25),
-                      Text('Enviar Nota'),
-                    ],
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.telegram_outlined, size: 100),
+                        SizedBox(width: 20),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Enviar Nota Fiscal',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Envie suas notas diretamente\npelo app.',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(width: 100),
+                SizedBox(height: 40),
 
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+                SizedBox(
+                  width: 460,
+                  height: 210,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SendNotas(db: widget.db),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.help, size: 25),
-                      Text('Dúvidas / Ajuda'),
-                    ],
+
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.help, size: 100),
+                        SizedBox(width: 20),
+
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Ajuda e Suporte',
+                                style: TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Dúvidas? Fale com nossa equipe.',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

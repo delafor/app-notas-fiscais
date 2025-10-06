@@ -51,6 +51,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   font_awesome_flutter: ^10.9.1
+  mobile_scanner: ^7.1.2
 
 
 

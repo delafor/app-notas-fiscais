@@ -4,7 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:formulario/qrScannerPage.dart';
+import 'barrScannerPage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NotasPage extends StatefulWidget {
@@ -56,7 +57,7 @@ class BotoesCustomizados extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: fontSize ?? 12,
+              fontSize: fontSize ?? 15,
               fontWeight: FontWeight.bold,
               color: textColor,
             ),
@@ -73,6 +74,7 @@ class _NotasPageState extends State<NotasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Enviar Notas')),
       //style: defaultStyle.merge(style),
       body: Center(
         child: Column(
@@ -88,11 +90,11 @@ class _NotasPageState extends State<NotasPage> {
                     icon: nota != null
                         ? Image.file(
                             File(nota!.path),
-                            width: 45,
-                            height: 45,
+                            width: 110,
+                            height: 90,
                             fit: BoxFit.cover,
                           )
-                        : Icon(Icons.telegram, size: 25),
+                        : Icon(Icons.telegram, size: 50),
                     text: 'Enviar Nota',
 
                     onTap: selecionarNota,
@@ -103,7 +105,7 @@ class _NotasPageState extends State<NotasPage> {
                   height: 160,
                   width: 160,
                   child: BotoesCustomizados(
-                    icon: Icon(Icons.key, size: 25),
+                    icon: Icon(Icons.key, size: 50),
                     text: 'Digitar\nChave de Acesso',
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -124,9 +126,9 @@ class _NotasPageState extends State<NotasPage> {
                   height: 160,
                   width: 160,
                   child: BotoesCustomizados(
-                    icon: FaIcon(FontAwesomeIcons.barcode, size: 25),
+                    icon: FaIcon(FontAwesomeIcons.barcode, size: 50),
                     text: 'Ler\nCódigo de barra',
-                    onTap: selecionarNota,
+                    onTap: barrScanner,
                   ),
                 ),
                 SizedBox(width: 50),
@@ -134,9 +136,9 @@ class _NotasPageState extends State<NotasPage> {
                   height: 160,
                   width: 160,
                   child: BotoesCustomizados(
-                    icon: FaIcon(FontAwesomeIcons.qrcode, size: 25),
-                    text: 'Ler\nCódigo de barra',
-                    onTap: selecionarNota,
+                    icon: FaIcon(FontAwesomeIcons.qrcode, size: 50),
+                    text: 'Ler\nCódigo QR Code',
+                    onTap: lerQrCode,
                   ),
                 ),
               ],
@@ -156,5 +158,19 @@ class _NotasPageState extends State<NotasPage> {
     } catch (e) {
       print(e);
     }
+  }
+
+  lerQrCode() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QrScannerPage(db: widget.db)),
+    );
+  }
+
+  barrScanner() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Barrscannerpage(db: widget.db)),
+    );
   }
 }
