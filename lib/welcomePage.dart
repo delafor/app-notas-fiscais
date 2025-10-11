@@ -217,7 +217,11 @@ class WelcomepageState extends State<Welcome> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => Home(db: widget.db),
+                                      builder: (context) => Home(
+                                        db: widget.db,
+                                        isDark: false,
+                                        alternarTema: () {},
+                                      ),
                                     ),
                                   );
                                 }

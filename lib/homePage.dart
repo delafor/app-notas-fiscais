@@ -4,12 +4,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:formulario/InvoicesPage.dart';
 import 'package:formulario/dashboardPage.dart';
 import 'package:formulario/guaranteesPage.dart';
-import 'package:formulario/notasPage.dart';
+
 import 'package:formulario/welcomePage.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.db});
+  const Home({super.key, required this.db, required this.isDark,required this.alternarTema});
   final FirebaseFirestore db;
+  final bool isDark;
+  final VoidCallback alternarTema;
 
   @override
   State<Home> createState() => HomeState();
@@ -36,6 +38,7 @@ class HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int screenIndex = 0;
   late bool showNavigationDrawer;
+ 
 
   void handleScreenChanged(int selectedScreen) {
     setState(() {
@@ -72,6 +75,23 @@ class HomeState extends State<Home> {
         //   ),
         // ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications, color: Colors.black),
+            tooltip: 'Notifications',
+            onPressed: () {},
+          ),
+          IconButton(
+            onPressed: widget.alternarTema, 
+              icon: Icon(
+                widget.isDark
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+                color: Colors.black,
+              )
+            
+          
+            
+          ),
           PopupMenuButton<String>(
             icon: Icon(Icons.menu), // ícone do botão
             onSelected: (String value) {
@@ -81,7 +101,16 @@ class HomeState extends State<Home> {
             },
 
             itemBuilder: (BuildContext context) => [
-              PopupMenuItem(value: "logout", child: Text("Logout")),
+              PopupMenuItem(
+                value: "logout",
+                child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(width: 10),
+                    Text("Sair/Deslogar"),
+                  ],
+                ),
+              ),
             ],
           ),
         ],

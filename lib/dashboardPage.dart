@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:formulario/helpPage.dart';
 
 import 'package:formulario/sendNotas.dart';
 
@@ -145,7 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SendNotas(db: widget.db),
+                          builder: (context) => HelpPage(db: widget.db),
                         ),
                       );
                     },

@@ -28,7 +28,7 @@ class LoginpageState extends State<Loginpage> {
   void entrar(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Home(db: widget.db)),
+      MaterialPageRoute(builder: (context) =>  Home(db: widget.db,isDark: false,alternarTema: () {},)),
     );
   }
 
@@ -160,7 +160,7 @@ class LoginpageState extends State<Loginpage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Home(db: widget.db),
+                                    builder: (context) => Home(db: widget.db,isDark: false,alternarTema: () {},),
                                   ),
                                 );
 

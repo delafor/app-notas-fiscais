@@ -340,7 +340,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Home(db: widget.db),
+                                    builder: (context) =>  Home(db: widget.db,isDark: false,alternarTema: () {},),
                                   ),
                                 );
                               } on FirebaseAuthException catch (e) {

@@ -31,11 +31,11 @@ final class QrScannerPage extends StatelessWidget {
                     debugPrint('Código não encontrado ou sem valor');
                     return;
                   }
-                  // debugPrint('Código encontrado: $code');
-                  // Navigator.pop(
-                  //   context,
-                  //   code,
-                  // ); // o code meio q ele serve para envia o valr de volta para tela q abriu o scanner
+                  debugPrint('Código encontrado: $code');
+                  Navigator.pop(
+                    context,
+                    code,
+                  ); // o code meio q ele serve para envia o valr de volta para tela q abriu o scanner
 
                   // ignore: avoid_print
                   print(code);

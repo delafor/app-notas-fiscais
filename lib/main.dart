@@ -23,21 +23,42 @@ void main() async {
   runApp((MyApp(initialToken: token)));
 }
 
-class MyApp extends StatelessWidget {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
+class MyApp extends StatefulWidget {
   final String? initialToken;
-
   MyApp({Key? key, this.initialToken}) : super(key: key);
+
+
+  // void alternarTema() {
+  //   setState(() {
+  //   isDark = !isDark;
+  //   });
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+  // }
+class _MyAppState extends State<MyApp> {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  bool isDark = false;
+
+  
+  void alternarTema() {
+    setState(() {
+    isDark = !isDark;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      
+      // theme: ThemeData(brightness: Brightness.light),
+      theme:  isDark ? ThemeData.dark() : ThemeData.light(),
+
       // define o tema do app aqui esqueci de fazer
       title: 'Meu App',
       // home: Welcome(db: FirebaseFirestore.instance),
-      home: initialToken == null ? Welcome(db: db) : Home(db: db),
+      home: widget.initialToken == null 
+      ? Welcome(db: db) 
+      : Home(db: db, alternarTema: alternarTema,isDark: isDark), //initialToken == null ? Welcome(db: db) : Home(db: db),
       // aqui você usa seu widget Home como a tela inicial
     );
   }
