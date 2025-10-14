@@ -11,7 +11,7 @@ class SendNotas extends StatefulWidget {
   @override
   State<SendNotas> createState() => _SendNotasState();
 }
-
+// final passwordController = TextEditingController();
 class BotoesCustomizados extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
@@ -23,6 +23,7 @@ class BotoesCustomizados extends StatelessWidget {
   final Color? textColor;
   final double? minWidth;
   final double? minHeight;
+  
 
   const BotoesCustomizados({
     Key? key,
@@ -36,6 +37,7 @@ class BotoesCustomizados extends StatelessWidget {
     this.textColor,
     this.minWidth,
     this.minHeight,
+    
     //required ButtonStyle style,
   }) : super(key: key);
 
@@ -148,42 +150,7 @@ class _SendNotasState extends State<SendNotas> {
                     minHeight: 15,
                   ),
 
-                  // TextButton(
-                  //   style: TextButton.styleFrom(
-                  //     // side: BorderSide(
-                  //     //   color: const Color.fromARGB(255, 255, 255, 255),
-                  //     //   width: 2,
-                  //     // ),
-                  //     shadowColor: Colors.black,
-                  //     backgroundColor: Colors.orange,
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(20),
-                  //     ),
-                  //     padding: const EdgeInsets.symmetric(
-                  //       horizontal: 20,
-                  //       vertical: 20,
-                  //     ),
-                  //   ),
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => InfoPage(db: widget.db),
-                  //       ),
-                  //     );
-                  //   },
-
-                  //   child: Row(
-                  //     children: [
-                  //       Icon(Icons.info, color: Colors.white),
-                  //       SizedBox(width: 10),
-                  //       Text(
-                  //         'Sua nota é valida? Veja as regas.',
-                  //         style: TextStyle(color: Colors.white),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+            
                 ],
               ),
             ),
@@ -199,6 +166,8 @@ class _SendNotasState extends State<SendNotas> {
                   child: BotoesCustomizados(
                     text: 'Enviar Nota/Cupom Fiscal',
                     imagePath: 'assets/CupomFiscal.png',
+
+                    
 
                     onTap: () {
                       Navigator.push(
