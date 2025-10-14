@@ -27,7 +27,6 @@ class MyApp extends StatefulWidget {
   final String? initialToken;
   MyApp({Key? key, this.initialToken}) : super(key: key);
 
-
   // void alternarTema() {
   //   setState(() {
   //   isDark = !isDark;
@@ -35,15 +34,15 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
-  // }
+
+// }
 class _MyAppState extends State<MyApp> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   bool isDark = false;
 
-  
   void alternarTema() {
     setState(() {
-    isDark = !isDark;
+      isDark = !isDark;
     });
   }
 
@@ -51,14 +50,43 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       // theme: ThemeData(brightness: Brightness.light),
-      theme:  isDark ? ThemeData.dark() : ThemeData.light(),
+      theme: isDark
+          ? ThemeData(
+              brightness: Brightness.dark,
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  // minimumSize: Size(200, 50),
+                  textStyle: TextStyle(fontSize: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            )
+          : ThemeData(
+              brightness: Brightness.light,
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+                  // minimumSize: Size(200, 50),
+                  textStyle: TextStyle(fontSize: 15),
+
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
 
       // define o tema do app aqui esqueci de fazer
       title: 'Meu App',
       // home: Welcome(db: FirebaseFirestore.instance),
-      home: widget.initialToken == null 
-      ? Welcome(db: db) 
-      : Home(db: db, alternarTema: alternarTema,isDark: isDark), //initialToken == null ? Welcome(db: db) : Home(db: db),
+      home: widget.initialToken == null
+          ? Welcome(db: db)
+          : Home(
+              db: db,
+              alternarTema: alternarTema,
+              isDark: isDark,
+            ), //initialToken == null ? Welcome(db: db) : Home(db: db),
       // aqui você usa seu widget Home como a tela inicial
     );
   }
