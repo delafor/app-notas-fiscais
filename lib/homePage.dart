@@ -8,7 +8,12 @@ import 'package:formulario/guaranteesPage.dart';
 import 'package:formulario/welcomePage.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key, required this.db, required this.isDark,required this.alternarTema});
+  const Home({
+    super.key,
+    required this.db,
+    required this.isDark,
+    required this.alternarTema,
+  });
   final FirebaseFirestore db;
   final bool isDark;
   final VoidCallback alternarTema;
@@ -38,8 +43,6 @@ class HomeState extends State<Home> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   int screenIndex = 0;
   late bool showNavigationDrawer;
- 
-
 
   void handleScreenChanged(int selectedScreen) {
     setState(() {
@@ -82,16 +85,11 @@ class HomeState extends State<Home> {
             onPressed: () {},
           ),
           IconButton(
-            onPressed: widget.alternarTema, 
-              icon: Icon(
-                widget.isDark
-                    ? Icons.dark_mode
-                    : Icons.light_mode,
-                color: Colors.black,
-              )
-            
-          
-            
+            onPressed: widget.alternarTema,
+            icon: Icon(
+              widget.isDark ? Icons.dark_mode : Icons.light_mode,
+              color: Colors.black,
+            ),
           ),
           PopupMenuButton<String>(
             icon: Icon(Icons.menu), // ícone do botão
@@ -118,12 +116,15 @@ class HomeState extends State<Home> {
       ),
       key: scaffoldKey,
 
-      body: SafeArea(
-        bottom: false,
-        top: false,
-        child: screenIndex < screens.length
-            ? screens[screenIndex]()
-            : const Center(child: Text('Index out of range')),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SafeArea(
+          bottom: false,
+          top: false,
+          child: screenIndex < screens.length
+              ? screens[screenIndex]()
+              : const Center(child: Text('Index out of range')),
+        ),
       ),
 
       // 👇 Barra inferior substituindo o NavigationRail

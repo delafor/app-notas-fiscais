@@ -93,212 +93,166 @@ class WelcomepageState extends State<Welcome> {
         key: formkey,
         child: Column(
           children: [
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/NotaEscudo.png',
-                      width: 200,
-                      height: 200,
+            Image.asset('assets/NotaEscudo.png', width: 200, height: 200),
+            Text(
+              "Gestor de Garantias\n    e Notas Fiscais",
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            // Text(
+            //   "APPSTA",
+            //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            //     letterSpacing: 5,
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 24,
+            //     color: Theme.of(context).colorScheme.primary,
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Text(
+                "Sign Up",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 35,
+                  color: Theme.of(context).colorScheme.scrim,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(
+                "It's easier to sign up now",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: const Color.fromARGB(168, 0, 0, 0),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: const Size(345, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(
+                      color: Color.fromARGB(201, 0, 0, 0),
+                      width: 1,
                     ),
-                    Text(
-                      "Gestor de Garantias\n    e Notas Fiscais",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MyHomePage(db: widget.db, title: 'Form'),
                     ),
-                    // Text(
-                    //   "APPSTA",
-                    //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    //     letterSpacing: 5,
-                    //     fontWeight: FontWeight.bold,
-                    //     fontSize: 24,
-                    //     color: Theme.of(context).colorScheme.primary,
-                    //   ),
-                    // ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Text(
-                        "Sign Up",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 35,
-                          color: Theme.of(context).colorScheme.scrim,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text(
-                        "It's easier to sign up now",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                          color: const Color.fromARGB(168, 0, 0, 0),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          minimumSize: const Size(345, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: Color.fromARGB(201, 0, 0, 0),
-                              width: 1,
-                            ),
-                          ),
-                          padding: EdgeInsets.zero,
-                        ),
-                        onPressed: () {
+                  );
+                },
+                child: Text(
+                  "Register using email",
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontSize: 17,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ),
+            Spacer(),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // TextButton.icon(
+                //   onPressed: () {},
+
+                //   icon: Image.asset(
+                //     'assets/X.png',
+                //     width: 50,
+                //     height: 50,
+                //   ),
+                //   label: const Text(''),
+                // ),
+                // const SizedBox(width: 25),
+                TextButton.icon(
+                  onPressed: () async {
+                    try {
+                      final userCredential = await _handleSignIn();
+                      if (userCredential != null) {
+                        final storage = FlutterSecureStorage();
+                        await storage.write(
+                          key: 'auth_token',
+                          value: userCredential.user?.uid,
+                        );
+                        debugPrint(
+                          "Usuário logado com sucesso: ${userCredential.user?.email}",
+                        );
+
+                        final saveToken = await storage.read(key: 'auth_token');
+
+                        final currentUser = FirebaseAuth.instance.currentUser;
+
+                        if (saveToken != null && currentUser != null) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  MyHomePage(db: widget.db, title: 'Form'),
+                              builder: (context) => Home(
+                                db: widget.db,
+                                isDark: false,
+                                alternarTema: () {},
+                              ),
                             ),
                           );
-                        },
-                        child: Text(
-                          "Register using email",
-                          style: Theme.of(context).textTheme.bodySmall
-                              ?.copyWith(
-                                fontSize: 17,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onPrimaryContainer,
-                              ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // TextButton.icon(
-                        //   onPressed: () {},
-
-                        //   icon: Image.asset(
-                        //     'assets/X.png',
-                        //     width: 50,
-                        //     height: 50,
-                        //   ),
-                        //   label: const Text(''),
-                        // ),
-                        // const SizedBox(width: 25),
-                        TextButton.icon(
-                          onPressed: () async {
-                            try {
-                              final userCredential = await _handleSignIn();
-                              if (userCredential != null) {
-                                final storage = FlutterSecureStorage();
-                                await storage.write(
-                                  key: 'auth_token',
-                                  value: userCredential.user?.uid,
-                                );
-                                debugPrint(
-                                  "Usuário logado com sucesso: ${userCredential.user?.email}",
-                                );
-
-                                final saveToken = await storage.read(
-                                  key: 'auth_token',
-                                );
-
-                                final currentUser =
-                                    FirebaseAuth.instance.currentUser;
-
-                                if (saveToken != null && currentUser != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => Home(
-                                        db: widget.db,
-                                        isDark: false,
-                                        alternarTema: () {},
-                                      ),
-                                    ),
-                                  );
-                                }
-                              } else {
-                                debugPrint("Usuário não logado");
-                              }
-                            } catch (e) {
-                              debugPrint("Erro: $e");
-                            }
-                          },
-                          icon: Image.asset(
-                            'assets/Google.png',
-                            width: 50,
-                            height: 50,
-                          ),
-                          label: const Text('Entrar com Google'),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 150),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Already have an account?",
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  height: 10,
-                                  color: Theme.of(context).colorScheme.scrim,
-                                ),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              // final storage = FlutterSecureStorage();
-                              // final savedToken = await storage.read(
-                              //   key: 'auth_token',
-                              // );
-
-                              // final currentUser =
-                              //     FirebaseAuth.instance.currentUser;
-
-                              // if (savedToken != null && currentUser != null) {
-                              //   if (savedToken == currentUser.uid) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      Loginpage(db: widget.db),
-                                ),
-                              );
-                              //   } else {
-                              //     ScaffoldMessenger.of(context).showSnackBar(
-                              //       const SnackBar(
-                              //         content: Text(
-                              //           'Token inválido, faça login novamente',
-                              //         ),
-                              //       ),
-                              //     );
-                              //   }
-                              // } else {
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     const SnackBar(
-                              //       content: Text('Nenhum usuário encontrado'),
-                              //     ),
-                              //   );
-                              // }
-                            },
-                            child: const Text("Login"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        }
+                      } else {
+                        debugPrint("Usuário não logado");
+                      }
+                    } catch (e) {
+                      debugPrint("Erro: $e");
+                    }
+                  },
+                  icon: Image.asset('assets/Google.png', width: 40, height: 40),
+                  label: const Text('Entrar com Google'),
                 ),
+              ],
+            ),
+            Spacer(flex: 3),
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Loginpage(db: widget.db),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Already have an account?",
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      height: 10,
+                      color: Theme.of(context).colorScheme.scrim,
+                    ),
+                  ),
+                  IgnorePointer(
+                    ignoring: true,
+                    child: TextButton(
+                      onPressed: () async {},
+                      child: const Text("Login"),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

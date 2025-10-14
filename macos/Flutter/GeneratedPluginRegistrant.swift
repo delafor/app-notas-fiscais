@@ -15,7 +15,6 @@ import google_sign_in_ios
 import mobile_scanner
 import path_provider_foundation
 import screen_retriever_macos
-import twitter_login
 import window_manager
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
@@ -29,6 +28,5 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   MobileScannerPlugin.register(with: registry.registrar(forPlugin: "MobileScannerPlugin"))
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   ScreenRetrieverMacosPlugin.register(with: registry.registrar(forPlugin: "ScreenRetrieverMacosPlugin"))
-  TwitterLoginPlugin.register(with: registry.registrar(forPlugin: "TwitterLoginPlugin"))
   WindowManagerPlugin.register(with: registry.registrar(forPlugin: "WindowManagerPlugin"))
 }

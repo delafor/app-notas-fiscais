@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,18 +21,26 @@ class Loginpage extends StatefulWidget {
 
 class LoginpageState extends State<Loginpage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final obscuredTextPassword = true;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+
+  final emailController = TextEditingController(
+    text: kDebugMode ? 'note@gmail.com' : '',
+  );
+  final passwordController = TextEditingController(
+    text: kDebugMode ? '123456' : '',
+  );
   final _formKey = GlobalKey<FormState>();
 
   void entrar(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) =>  Home(db: widget.db,isDark: false,alternarTema: () {},)),
+      MaterialPageRoute(
+        builder: (context) =>
+            Home(db: widget.db, isDark: false, alternarTema: () {}),
+      ),
     );
   }
 
+  bool obscuredTextPassword = true;
   @override
   Widget build(BuildContext context) {
     return Focus(
@@ -118,7 +127,24 @@ class LoginpageState extends State<Loginpage> {
 
                         TextFormField(
                           controller: passwordController,
+                          obscureText: obscuredTextPassword,
                           decoration: InputDecoration(
+                            suffixIcon: InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                setState(() {
+                                  obscuredTextPassword = !obscuredTextPassword;
+                                });
+                              },
+                              child: Icon(
+                                obscuredTextPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                size: 22,
+                              ),
+                            ),
+
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
@@ -160,7 +186,11 @@ class LoginpageState extends State<Loginpage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Home(db: widget.db,isDark: false,alternarTema: () {},),
+                                    builder: (context) => Home(
+                                      db: widget.db,
+                                      isDark: false,
+                                      alternarTema: () {},
+                                    ),
                                   ),
                                 );
 

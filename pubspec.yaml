@@ -43,7 +43,7 @@ dependencies:
   google_sign_in: ^6.3.0
   firebase_auth_dart: ^0.1.2
   firebase_auth: ^5.7.0
-  twitter_login: ^4.4.0
+  # twitter_login: ^4.4.0
   flutter_secure_storage: ^9.2.4
   flutter_launcher_icons: ^0.14.4
   intl: ^0.20.2

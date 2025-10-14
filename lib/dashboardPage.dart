@@ -24,178 +24,117 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          //textAlign: TextAlign.center,
-          'Dashboard',
-          style: TextStyle(
-            fontSize: 18,
-            letterSpacing: 1,
-
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Olá',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 35,
+              color: Colors.black,
+            ),
           ),
-        ),
+          SizedBox(width: 50),
+
+          Text(
+            'Gerencie suas notas fiscais de forma\nsimples e segura.',
+            //< aqui devo colocar a quantidade de notas cadastradas
+            style: TextStyle(fontSize: 17, color: Colors.black),
+          ),
+          Spacer(),
+          CardWithIconButton(
+            widget: widget,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SendNotas(db: widget.db),
+                ),
+              );
+            },
+            icon: Icons.telegram_outlined,
+            title: 'Enviar Nota',
+            subtitle: 'Envie suas notas diretamente\npelo app.',
+          ),
+          const SizedBox(height: 30),
+          CardWithIconButton(
+            widget: widget,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HelpPage(db: widget.db),
+                ),
+              );
+            },
+            icon: Icons.help,
+            title: 'Ajuda e Suporte',
+            subtitle: 'Dúvidas? Fale com nossa equipe.',
+          ),
+          Spacer(),
+        ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 25, right: 90),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Olá',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 35,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(width: 50),
+    );
+  }
+}
 
-                  Text(
-                    'Gerencie suas notas fiscais de forma\nsimples e segura.',
-                    //< aqui devo colocar a quantidade de notas cadastradas
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                ],
+class CardWithIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+  final String title;
+  final String subtitle;
+  const CardWithIconButton({
+    super.key,
+    required this.icon,
+    required this.onTap,
+    required this.title,
+    required this.subtitle,
+    required this.widget,
+  });
+
+  final DashboardPage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Icon(
+                  icon,
+                  size: 70,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
-            ),
-
-            SizedBox(height: 50),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SizedBox(
-                //   width: 200,
-                //   child: ListTile(
-                //     leading: Icon(Icons.telegram, size: 25),
-                //     title: Text('Enviar Nota'),
-                //     onTap: selecionarNota,
-                //     trailing: nota != null ? Image.file(File(nota!.path)) : null,
-                //   ),
-                // ),
-                SizedBox(
-                  width: 460,
-                  height: 210,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SendNotas(db: widget.db),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
 
-                      // mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.telegram_outlined, size: 100),
-                        SizedBox(width: 20),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Enviar Nota Fiscal',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                'Envie suas notas diretamente\npelo app.',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                    Text(
+                      subtitle,
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(fontSize: 13.5, color: Colors.black),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 40),
-
-                SizedBox(
-                  width: 460,
-                  height: 210,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HelpPage(db: widget.db),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 10,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                    ),
-
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Icon(Icons.help, size: 100),
-                        SizedBox(width: 20),
-
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Ajuda e Suporte',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                'Dúvidas? Fale com nossa equipe.',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
