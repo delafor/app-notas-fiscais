@@ -1,4 +1,4 @@
-name: formulario
+name: nfe
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -46,6 +46,9 @@ dependencies:
   # twitter_login: ^4.4.0
   flutter_secure_storage: ^9.2.4
   flutter_launcher_icons: ^0.14.4
+
+
+
   intl: ^0.20.2
   image_picker: ^1.2.0
   flutter_localizations:
@@ -54,6 +57,9 @@ dependencies:
   mobile_scanner: ^7.1.2
   firebase_storage: ^12.4.10
   syncfusion_flutter_datepicker: ^31.1.19
+  url_launcher: ^6.3.2
+  json_theme: ^9.0.3
+  flutter_gen: ^5.12.0
 
 
 
@@ -63,11 +69,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.4.6
+  flutter_gen_runner: ^5.1.0
 
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/NotaEscudo.png"
+  image_path: "assets/iconApp.png"
 
 
 
@@ -99,7 +107,7 @@ flutter:
 
     - assets/abraço.jpeg
     - assets/flor.jpeg
-    - assets/flor.jpeg
+    
     - assets/grafico.png
     - assets/recicle.png
     - assets/reutilize.png
@@ -111,7 +119,10 @@ flutter:
     - assets/CupomFiscal.png
     - assets/NotaEletronica.png
     - assets/NotaEletronica02.png
-    - assets/NotaEletronica02(2).png
+  
+    - assets/qrcode.png
+    - assets/page.png
+    - assets/nota-fiscal.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

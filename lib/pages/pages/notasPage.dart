@@ -1,16 +1,17 @@
 // pages/invoices_page.dart
 import 'dart:convert';
 import 'dart:io';
-import 'package:formulario/dashboardPage.dart';
+import 'dart:ui' as ui;
+
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as path;
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:formulario/qrScannerPage.dart';
-import 'barrScannerPage.dart';
+import 'package:nfe/pages/scanners/qrScannerPage.dart';
+import '../scanners/barrScannerPage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -29,7 +30,9 @@ class BotoesCustomizados extends StatelessWidget {
   final ButtonStyle? style;
   final double? fontSize;
   final Color? textColor;
-
+  final String? imagePath;
+  final int? minHeight;
+  final int? minWidth;
   const BotoesCustomizados({
     Key? key,
     required this.text,
@@ -38,6 +41,12 @@ class BotoesCustomizados extends StatelessWidget {
     this.icon,
     this.fontSize,
     this.textColor,
+    // required String imagePath,
+    // required int minHeight,
+    // required int minWidth,
+    this.imagePath,
+    this.minHeight,
+    this.minWidth,
   }) : super(key: key);
 
   @override
@@ -77,6 +86,8 @@ class _NotasPageState extends State<NotasPage> {
   final _formKey = GlobalKey<FormState>();
   bool mostrarcard = false;
   XFile? nota;
+  bool qrcode = false;
+  String? linkQrCode;
 
   String _selectedDate = '';
   // String _dateCount = '';
@@ -132,61 +143,84 @@ class _NotasPageState extends State<NotasPage> {
                       icon: nota != null
                           ? Image.file(
                               File(nota!.path),
-                              width: 150,
-                              height: 250,
+                              width: 50,
+                              height: 50,
                               fit: BoxFit.cover,
                             )
-                          : Icon(Icons.telegram, size: 50),
+                          : Icon(
+                              Icons.telegram,
+                              size: 50,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                       text: 'Escolha\nUma Nota',
+                      textColor: Theme.of(context).colorScheme.onPrimary,
                       onTap: selecionarNota,
+                      imagePath: '',
+                      minHeight: null,
+                      minWidth: null,
                     ),
                   ),
-                  SizedBox(width: 50),
-                  SizedBox(
-                    height: 160,
-                    width: 160,
-                    child: BotoesCustomizados(
-                      icon: Icon(Icons.key, size: 50),
-                      text: 'Digitar\nChave de Acesso',
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
-                      ),
-                      onTap: selecionarNota,
-                    ),
-                  ),
+                  // SizedBox(width: 50),
+                  // SizedBox(
+                  //   height: 160,
+                  //   width: 160,
+                  //   child: BotoesCustomizados(
+                  //     icon: Icon(Icons.key, size: 50),
+                  //     text: 'Digitar\nChave de Acesso',
+                  //     style: ElevatedButton.styleFrom(
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 10,
+                  //         vertical: 10,
+                  //       ),
+                  //     ),
+                  //     onTap: selecionarNota,
+                  //     imagePath: '',
+                  //     minHeight: null,
+                  //     minWidth: null,
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 160,
-                    width: 160,
-                    child: BotoesCustomizados(
-                      icon: FaIcon(FontAwesomeIcons.barcode, size: 50),
-                      text: 'Ler\nCódigo de barra',
-                      onTap: barrScanner,
-                    ),
-                  ),
+                  // SizedBox(
+                  //   height: 160,
+                  //   width: 160,
+                  //   child: BotoesCustomizados(
+                  //     icon: FaIcon(FontAwesomeIcons.barcode, size: 50),
+                  //     text: 'Ler\nCódigo de barra',
+                  //     onTap: barrScanner,
+                  //     imagePath: '',
+                  //     minHeight: null,
+                  //     minWidth: null,
+                  //   ),
+                  // ),
                   SizedBox(width: 50),
                   SizedBox(
                     height: 160,
                     width: 160,
                     child: BotoesCustomizados(
-                      icon: FaIcon(FontAwesomeIcons.qrcode, size: 50),
+                      icon: FaIcon(
+                        FontAwesomeIcons.qrcode,
+                        size: 50,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                       text: 'Ler\nCódigo QR Code',
+                      textColor: Theme.of(context).colorScheme.onPrimary,
                       onTap: lerQrCode,
+                      imagePath: '',
+                      minHeight: null,
+
+                      minWidth: null,
                     ),
                   ),
                 ],
               ),
             ],
           ),
-          if (mostrarcard && nota != null)
+          if (mostrarcard && (nota != null || qrcode))
             Center(
               child: Card(
                 elevation: 3,
@@ -203,12 +237,28 @@ class _NotasPageState extends State<NotasPage> {
                         Expanded(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
-                            child: Image.file(
-                              File(nota!.path),
-                              width: 200,
-                              // height: 200,
-                              fit: BoxFit.contain,
-                            ),
+                            child: qrcode
+                                ? Image.asset(
+                                    'assets/qrcode.png',
+                                    width: 200,
+                                    fit: BoxFit.contain,
+                                  )
+                                : (nota != null
+                                      ? Image.file(
+                                          File(nota!.path),
+                                          width: 200,
+                                          fit: BoxFit.contain,
+                                        )
+                                      : SizedBox()),
+
+                            ////////////////////
+                            // child: Image.file(
+                            //   File(nota!.path),
+                            //   width: 200,
+                            //   // height: 200,
+                            //   fit: BoxFit.contain,
+                            // ),
+                            ////////////////////
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -285,13 +335,26 @@ class _NotasPageState extends State<NotasPage> {
                                 onPressed: () async {
                                   if (!_formKey.currentState!.validate())
                                     return;
-                                  if (nota == null) return;
+                                  // if (nota == null) return;
 
                                   try {
+                                    String base64Image = '';
+                                    if (qrcode) {
+                                      final bytes = await rootBundle.load(
+                                        'assets/qrcode.png',
+                                      );
+                                      base64Image = base64Encode(
+                                        bytes.buffer.asUint8List(),
+                                      );
+                                    } else if (nota != null) {
+                                      final bytes = await nota!.readAsBytes();
+                                      base64Image = base64Encode(bytes);
+                                      // final bytes = await nota!.readAsBytes();
+                                      // base64Image = base64Encode(bytes);
+                                    }
                                     // lê bytes da imagem
-                                    final bytes = await nota!.readAsBytes();
+
                                     //converte para a base64
-                                    final base64Image = base64Encode(bytes);
 
                                     // Salva os dados no Firestore
                                     await FirebaseFirestore.instance
@@ -300,6 +363,9 @@ class _NotasPageState extends State<NotasPage> {
                                           'titulo': tituloController.text,
                                           'data': dataController.text,
                                           'imagemBase64': base64Image,
+                                          'linkNota': qrcode
+                                              ? linkQrCode.toString()
+                                              : null,
                                           'criadoEm':
                                               FieldValue.serverTimestamp(),
                                         });
@@ -310,6 +376,8 @@ class _NotasPageState extends State<NotasPage> {
                                       nota = null;
                                       tituloController.clear();
                                       dataController.clear();
+                                      qrcode = false;
+                                      linkQrCode = null;
                                     });
 
                                     await showDialog(
@@ -334,6 +402,7 @@ class _NotasPageState extends State<NotasPage> {
                                     nota = null;
                                     tituloController.clear();
                                     dataController.clear();
+                                    qrcode = false;
                                   });
                                 },
                                 child: Text('Cadastrar Nota'),
@@ -359,24 +428,10 @@ class _NotasPageState extends State<NotasPage> {
       if (file != null) {
         nota = file;
         //TODO usar dialog no lugar stack
-        // showDialog(
-        //   context: context,
-        //   builder: (context) {
-        //     return AlertDialog(
-        //       content: Column(
-        //         children: [
-        //           Image.file(
-        //             File(file.path),
-        //             width: 200,
-        //             height: 200,
-        //             fit: BoxFit.cover,
-        //           ),
-        //         ],
-        //       ),
-        //     );
-        //   },
+
         setState(() {
           mostrarcard = true;
+          qrcode = false;
         });
       }
     } catch (e) {
@@ -385,16 +440,26 @@ class _NotasPageState extends State<NotasPage> {
   }
 
   lerQrCode() async {
-    Navigator.push(
+    final resultado = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => QrScannerPage(db: widget.db)),
     );
+
+    if (resultado == null) return;
+
+    setState(() {
+      qrcode = true;
+      nota = null;
+      linkQrCode = resultado.toString();
+      tituloController.text = ''; //resultado.toString();
+      mostrarcard = true;
+    });
   }
 
-  barrScanner() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Barrscannerpage(db: widget.db)),
-    );
-  }
+  // barrScanner() async {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => Barrscannerpage(db: widget.db)),
+  //   );
+  // }
 }

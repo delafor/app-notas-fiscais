@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:formulario/loginPage.dart';
+import 'package:nfe/pages/login/loginPage.dart';
 
 class PassRecovery extends StatefulWidget {
   final FirebaseFirestore db;
@@ -91,6 +91,7 @@ class _PassRecoveryState extends State<PassRecovery> {
                       style: TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         //height: ,
                       ),
                     ),
@@ -111,7 +112,7 @@ class _PassRecoveryState extends State<PassRecovery> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: const Color.fromARGB(211, 0, 0, 0),
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     SizedBox(height: 40),
@@ -125,9 +126,27 @@ class _PassRecoveryState extends State<PassRecovery> {
                           decoration: InputDecoration(
                             // contentPadding: EdgeInsets.symmetric(vertical: 20),
                             labelText: 'Email',
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                             hintText: 'Insira seu email',
+                            prefixIcon: Icon(Icons.email),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 1,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                width: 2,
+                              ),
                             ),
                           ),
                           validator: (value) {
@@ -168,8 +187,19 @@ class _PassRecoveryState extends State<PassRecovery> {
                             print('Detalhes:$stackTrace');
                           }
                         },
-                        label: Text('Enviar link de recuperação'),
+                        label: Text(
+                          'Enviar link de recuperação',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
                         style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Colors.black,
+
                           padding: EdgeInsets.symmetric(
                             vertical: 16,
                             horizontal: 20,

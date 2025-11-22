@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:formulario/infoPage.dart';
+import 'package:nfe/pages/help/infoPage.dart';
+import 'package:nfe/pages/help/reportPage.dart';
+import 'package:nfe/pages/help/terms.dart';
 
 class HelpPage extends StatelessWidget {
   final FirebaseFirestore db;
@@ -48,7 +50,12 @@ class HelpPage extends StatelessWidget {
               Divider(),
               SizedBox(height: 5),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ReportPage(db: db)),
+                  );
+                },
                 style: TextButton.styleFrom(
                   minimumSize: Size(500, 50),
                   padding: EdgeInsets.all(16),
@@ -63,6 +70,28 @@ class HelpPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 19),
+              Divider(),
+              SizedBox(height: 5),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Terms(db: db)),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: Size(500, 50),
+                  padding: EdgeInsets.all(16),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ImageIcon(AssetImage('assets/page.png'), size: 25),
+                    SizedBox(width: 8),
+                    Text('Termos de uso', style: TextStyle(fontSize: 16)),
+                  ],
+                ),
+              ),
               Divider(),
             ],
           ),

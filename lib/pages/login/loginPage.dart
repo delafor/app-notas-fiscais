@@ -4,10 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:formulario/homePage.dart';
-import 'package:formulario/passrecoveryPage.dart';
-import 'package:formulario/registerPage.dart';
-import 'package:formulario/welcomePage.dart';
+import 'package:nfe/pages/home/homePage.dart';
+import 'package:nfe/pages/login/passrecoveryPage.dart';
+import 'package:nfe/pages/pages/sendNotas.dart';
+import 'package:nfe/pages/register/registerPage.dart';
+import 'package:nfe/pages/welcome/welcomePage.dart';
 import 'package:validators/validators.dart' as validator;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -23,10 +24,14 @@ class LoginpageState extends State<Loginpage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final emailController = TextEditingController(
-    text: kDebugMode ? 'note@gmail.com' : '',
+    text: kDebugMode
+        ? 'note@gmail.com'
+        : '', // caso eu queira fica usando login de teste
   );
   final passwordController = TextEditingController(
-    text: kDebugMode ? '123456' : '',
+    text: kDebugMode
+        ? '123456'
+        : '', // caso eu queira fica usando login de teste
   );
   final _formKey = GlobalKey<FormState>();
 
@@ -35,7 +40,7 @@ class LoginpageState extends State<Loginpage> {
       context,
       MaterialPageRoute(
         builder: (context) =>
-            Home(db: widget.db, isDark: false, alternarTema: () {}),
+            SendNotas(db: widget.db, isDark: false, alternarTema: () {}),
       ),
     );
   }
@@ -56,8 +61,10 @@ class LoginpageState extends State<Loginpage> {
           },
 
           child: Scaffold(
-            backgroundColor: const Color.fromARGB(241, 255, 255, 255),
             appBar: AppBar(
+              backgroundColor: const Color.fromARGB(255, 238, 237, 237),
+              elevation: 4,
+              shadowColor: Colors.black,
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
 
@@ -65,7 +72,11 @@ class LoginpageState extends State<Loginpage> {
                   Navigator.pop(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Welcome(db: widget.db),
+                      builder: (context) => Welcome(
+                        db: widget.db,
+                        isDark: false,
+                        alternarTema: () {},
+                      ),
                     ),
                   );
                 },
@@ -87,7 +98,7 @@ class LoginpageState extends State<Loginpage> {
                         Icon(
                           Icons.person,
                           size: 100,
-                          color: colorScheme.primary,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                         Text(
                           'Login Account',
@@ -95,7 +106,7 @@ class LoginpageState extends State<Loginpage> {
                               ?.copyWith(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                         ),
 
@@ -104,12 +115,30 @@ class LoginpageState extends State<Loginpage> {
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
                             labelText: 'Email',
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
                             hint: Text('Your Email'),
                             prefixIcon: Icon(Icons.email),
+
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 1,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                width: 2,
+                              ),
+                            ),
                           ),
 
                           validator: (text) {
@@ -129,6 +158,11 @@ class LoginpageState extends State<Loginpage> {
                           controller: passwordController,
                           obscureText: obscuredTextPassword,
                           decoration: InputDecoration(
+                            labelText: 'Password',
+                            floatingLabelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            prefixIcon: Icon(Icons.password),
                             suffixIcon: InkWell(
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
@@ -144,13 +178,24 @@ class LoginpageState extends State<Loginpage> {
                                 size: 22,
                               ),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.secondary,
+                                width: 1,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                width: 2,
+                              ),
+                            ),
 
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),
-
-                            labelText: 'Password',
-                            prefixIcon: Icon(Icons.password),
                           ),
                           validator: (text) {
                             if (text == null || text.isEmpty) {
@@ -163,6 +208,18 @@ class LoginpageState extends State<Loginpage> {
                         SizedBox(height: 20),
 
                         TextButton(
+                          style: TextButton.styleFrom(
+                            shadowColor: Colors.black,
+                            minimumSize: Size(150, 45),
+                            elevation: 3,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           onPressed: () async {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
@@ -186,7 +243,7 @@ class LoginpageState extends State<Loginpage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Home(
+                                    builder: (context) => SendNotas(
                                       db: widget.db,
                                       isDark: false,
                                       alternarTema: () {},
@@ -229,12 +286,29 @@ class LoginpageState extends State<Loginpage> {
                               }
                             }
                           },
-                          child: Text("Entrar"),
+                          child: Text(
+                            "Entrar",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
 
                         SizedBox(height: 12),
 
                         TextButton(
+                          style: TextButton.styleFrom(
+                            shadowColor: Colors.black,
+                            minimumSize: Size(180, 45),
+                            elevation: 3,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            foregroundColor: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -244,7 +318,12 @@ class LoginpageState extends State<Loginpage> {
                               ),
                             );
                           },
-                          child: Text("Esqueceu a senha?"),
+                          child: Text(
+                            "Esqueceu a senha?",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                         ),
                       ],
                     ),

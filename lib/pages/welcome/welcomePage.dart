@@ -2,18 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:formulario/homePage.dart';
-import 'package:formulario/loginPage.dart';
+import 'package:nfe/pages/home/homePage.dart';
+import 'package:nfe/pages/login/loginPage.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:formulario/registerPage.dart';
-
-// Import necessário para Twitter login no mobile
-//import 'package:twitter_login/twitter_login.dart';
+import 'package:nfe/pages/pages/sendNotas.dart';
+import 'package:nfe/pages/register/registerPage.dart';
 
 class Welcome extends StatefulWidget {
   final FirebaseFirestore db;
-  const Welcome({super.key, required this.db});
+  final bool isDark;
+  final VoidCallback alternarTema;
+
+  const Welcome({
+    super.key,
+    required this.db,
+    required this.isDark,
+    required this.alternarTema,
+  });
 
   @override
   State<Welcome> createState() => WelcomepageState();
@@ -22,23 +28,18 @@ class Welcome extends StatefulWidget {
 class WelcomepageState extends State<Welcome> {
   final formkey = GlobalKey<FormState>();
 
-  // instância do GoogleSignIn (sem construtor "anônimo")
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>['email']);
 
-  // Função corrigida e robusta do login Google (só idToken, sem accessToken)
   Future<UserCredential?> _handleSignIn() async {
     try {
-      // 1) Abre a tela de seleção de conta Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        // usuário cancelou
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login cancelado pelo usuário')),
         );
         return null;
       }
 
-      // 2) Pega tokens
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
@@ -53,10 +54,8 @@ class WelcomepageState extends State<Welcome> {
         return null;
       }
 
-      // 3) Cria credencial Firebase com idToken (sem accessToken)
       final credential = GoogleAuthProvider.credential(idToken: idToken);
 
-      // 4) Faz sign-in no Firebase
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithCredential(credential);
 
@@ -84,10 +83,7 @@ class WelcomepageState extends State<Welcome> {
 
   @override
   Widget build(BuildContext context) {
-    //final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(240, 255, 255, 255),
-      // appBar: AppBar(backgroundColor: const Color.fromARGB(240, 255, 255, 255)),
       body: Form(
         autovalidateMode: AutovalidateMode.onUserInteraction,
         key: formkey,
@@ -99,18 +95,9 @@ class WelcomepageState extends State<Welcome> {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-            // Text(
-            //   "APPSTA",
-            //   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            //     letterSpacing: 5,
-            //     fontWeight: FontWeight.bold,
-            //     fontSize: 24,
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.only(top: 40),
               child: Text(
@@ -151,8 +138,7 @@ class WelcomepageState extends State<Welcome> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          MyHomePage(db: widget.db, title: 'Form'),
+                      builder: (context) => RegisterPage(db: widget.db),
                     ),
                   );
                 },
@@ -160,27 +146,15 @@ class WelcomepageState extends State<Welcome> {
                   "Register using email",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontSize: 17,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),
             ),
             Spacer(),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // TextButton.icon(
-                //   onPressed: () {},
-
-                //   icon: Image.asset(
-                //     'assets/X.png',
-                //     width: 50,
-                //     height: 50,
-                //   ),
-                //   label: const Text(''),
-                // ),
-                // const SizedBox(width: 25),
                 TextButton.icon(
                   onPressed: () async {
                     try {
@@ -203,7 +177,7 @@ class WelcomepageState extends State<Welcome> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home(
+                              builder: (context) => SendNotas(
                                 db: widget.db,
                                 isDark: false,
                                 alternarTema: () {},
@@ -219,7 +193,12 @@ class WelcomepageState extends State<Welcome> {
                     }
                   },
                   icon: Image.asset('assets/Google.png', width: 40, height: 40),
-                  label: const Text('Entrar com Google'),
+                  label: Text(
+                    'Entrar com Google',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -249,7 +228,12 @@ class WelcomepageState extends State<Welcome> {
                     ignoring: true,
                     child: TextButton(
                       onPressed: () async {},
-                      child: const Text("Login"),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
                     ),
                   ),
                 ],

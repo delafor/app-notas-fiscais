@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 
-import 'package:formulario/registerPage.dart';
+import 'package:nfe/pages/register/registerPage.dart';
 import 'package:mockito/mockito.dart';
 
 class FakeFirebaseFirestore extends Mock implements FirebaseFirestore {}

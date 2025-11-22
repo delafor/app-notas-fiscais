@@ -1,93 +1,96 @@
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:formulario/firebase_options.dart';
-import 'package:formulario/homePage.dart';
-import 'package:formulario/welcomePage.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-//import 'package:window_manager/window_manager.dart';
+import 'package:nfe/firebase_options.dart';
+import 'package:nfe/pages/home/homePage.dart';
+import 'package:nfe/pages/login/loginPage.dart';
+import 'package:nfe/pages/login/passrecoveryPage.dart';
+import 'package:nfe/pages/pages/sendNotas.dart';
+import 'package:nfe/pages/register/registerPage.dart';
+import 'package:nfe/pages/welcome/welcomePage.dart';
+import 'package:nfe/theme.dart';
 
-void main() async {
-  await initializeDateFormatting('pt_BR', null);
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions
-        .currentPlatform, // se estiver usando flutterfire CLI
-  );
-  final storage = FlutterSecureStorage();
+// -------------------- CONTROLE DO TEMA --------------------
 
-  String? token = await storage.read(key: 'auth_token');
-
-  runApp((MyApp(initialToken: token)));
-}
-
-class MyApp extends StatefulWidget {
-  final String? initialToken;
-  MyApp({Key? key, this.initialToken}) : super(key: key);
-
-  // void alternarTema() {
-  //   setState(() {
-  //   isDark = !isDark;
-  //   });
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-// }
-class _MyAppState extends State<MyApp> {
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+class ThemeController extends ChangeNotifier {
+  final storage = const FlutterSecureStorage();
   bool isDark = false;
 
-  void alternarTema() {
-    setState(() {
-      isDark = !isDark;
-    });
+  Future<void> loadTheme() async {
+    String? saved = await storage.read(key: "themeMode");
+    isDark = saved == "dark";
+    notifyListeners();
   }
+
+  Future<void> toggleTheme() async {
+    isDark = !isDark;
+    await storage.write(key: "themeMode", value: isDark ? "dark" : "light");
+    notifyListeners();
+  }
+}
+
+// -------------------- MAIN --------------------
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('pt_BR', null);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  final controller = ThemeController();
+  await controller.loadTheme();
+
+  runApp(MyApp(controller: controller));
+}
+
+// -------------------- APP --------------------
+
+class MyApp extends StatelessWidget {
+  final ThemeController controller;
+  MyApp({required this.controller});
+
+  final FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // theme: ThemeData(brightness: Brightness.light),
-      theme: isDark
-          ? ThemeData(
-              brightness: Brightness.dark,
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  // minimumSize: Size(200, 50),
-                  textStyle: TextStyle(fontSize: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            )
-          : ThemeData(
-              brightness: Brightness.light,
-              elevatedButtonTheme: ElevatedButtonThemeData(
-                style: ElevatedButton.styleFrom(
-                  // minimumSize: Size(200, 50),
-                  textStyle: TextStyle(fontSize: 15),
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (_, __) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Meu App',
 
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
+          theme: AppThemes.light(),
+          darkTheme: AppThemes.dark(),
+          themeMode: controller.isDark ? ThemeMode.dark : ThemeMode.light,
 
-      // define o tema do app aqui esqueci de fazer
-      title: 'Meu App',
-      // home: Welcome(db: FirebaseFirestore.instance),
-      home: widget.initialToken == null
-          ? Welcome(db: db)
-          : Home(
-              db: db,
-              alternarTema: alternarTema,
-              isDark: isDark,
-            ), //initialToken == null ? Welcome(db: db) : Home(db: db),
-      // aqui você usa seu widget Home como a tela inicial
+          routes: {
+            '/login': (_) => Loginpage(db: db),
+            '/register': (_) => RegisterPage(db: db),
+            '/recover': (_) => PassRecovery(db: db),
+          },
+
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              final userLogged = snapshot.hasData;
+
+              return userLogged
+                  ? SendNotas(
+                      db: db,
+                      alternarTema: controller.toggleTheme,
+                      isDark: controller.isDark,
+                    )
+                  : Welcome(db: db, isDark: controller.isDark, alternarTema:controller.toggleTheme);
+            },
+          ),
+        );
+      },
     );
   }
 }
