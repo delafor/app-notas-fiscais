@@ -217,46 +217,6 @@ Entre os pontos previstos para produção estão:
 
 ---
 
-## 📈 Roadmap
-
-### Fase 1 — Base do aplicativo
-
-- [x] Estrutura inicial Flutter.
-- [x] Tema e interface inicial.
-- [x] Integração com Firebase.
-- [x] Autenticação.
-- [x] Estrutura de gerenciamento das notas.
-- [x] Recursos iniciais de leitura/captura.
-
-### Fase 2 — Consolidação
-
-- [ ] Melhorar arquitetura por feature.
-- [ ] Padronizar estados de loading, erro e vazio.
-- [ ] Melhorar tratamento global de exceções.
-- [ ] Ampliar cobertura de testes.
-- [ ] Revisar dependências.
-- [ ] Melhorar documentação.
-
-### Fase 3 — Produção
-
-- [ ] CI/CD.
-- [ ] Validação automática de analyze/test/build.
-- [ ] Auditoria das regras Firebase.
-- [ ] Monitoramento de crashes.
-- [ ] Telemetria e observabilidade.
-- [ ] Revisão completa de UX e acessibilidade.
-- [ ] Checklist de publicação.
-
----
-
-## 📋 Status
-
-**Status atual:** projeto em evolução e preparação para uma versão mais robusta de produção.
-
-O código já representa uma aplicação funcional em desenvolvimento, mas ainda existem melhorias importantes de arquitetura, testes, segurança, observabilidade e processo de entrega antes de considerar o produto completamente pronto para produção.
-
----
-
 ## 💡 O que este projeto representa
 
 Mais do que um aplicativo de notas fiscais, este projeto serviu como um laboratório real para aprender e colocar em prática conceitos de desenvolvimento mobile, Firebase, autenticação, banco de dados, armazenamento, UI e arquitetura de software.
@@ -283,14 +243,9 @@ O projeto mostrou o problema, revelou oportunidades e criou a base técnica para
 
 ## 👨‍💻 Autor
 
-Desenvolvido por **delafor**.
+Desenvolvido por **Edinaldo Oliveira**.
 
 Projeto criado com foco em aprendizado prático, desenvolvimento mobile e construção de soluções que possam evoluir para produtos reais.
 
 ---
 
-## 📄 Licença
-
-A licença do projeto ainda não foi definida.
-
-Caso o projeto seja distribuído publicamente, recomenda-se definir uma licença antes da publicação oficial.
