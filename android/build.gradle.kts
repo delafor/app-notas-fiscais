@@ -1,15 +1,3 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2") // ou a versão compatível com seu projeto
-        classpath("com.google.gms:google-services:4.3.15") // ESSENCIAL para google_sign_in e Firebase
-    }
-}
-
-
 allprojects {
     repositories {
         google()
